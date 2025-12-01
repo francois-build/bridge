@@ -2,6 +2,8 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { Layout, PlusCircle } from 'lucide-react';
+import { ChallengeFeed } from '../features/marketplace/ChallengeFeed';
+import { RedTeamFeed } from '../features/marketplace/RedTeamFeed';
 
 const Onboarding = lazy(() => import('../features/onboarding/Onboarding'));
 const ChallengeBiddingForm = lazy(() => import('../features/marketplace/ChallengeBiddingForm'));
@@ -27,7 +29,13 @@ export default function App() {
         <main className="p-4">
           <Suspense fallback={<div className="text-center">Loading...</div>}>
             <Routes>
-              <Route path="/" element={<Onboarding />} />
+              <Route path="/" element={
+                <div>
+                  <ChallengeFeed />
+                  <RedTeamFeed />
+                </div>
+              } />
+              <Route path="/onboarding" element={<Onboarding />} />
               <Route path="/challenge/new" element={<ChallengeBiddingForm />} />
             </Routes>
           </Suspense>
