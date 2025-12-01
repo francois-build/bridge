@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Clock, Shield } from 'lucide-react';
+import { Shield } from 'lucide-react';
 import type { ChallengeInput } from '../../lib/schemas';
 
 // Mock Data: Compliant with Schema (min 1 milestone)
@@ -31,11 +31,11 @@ const MOCK_CHALLENGES: ChallengeInput[] = [
 const ChallengeCard = ({ data }: { data: ChallengeInput }) => {
     const navigate = useNavigate();
     return (
-        <div className="bg-white rounded-xl p-6 shadow-levitated border-t border-white border-b border-slate-200/60 hover:-translate-y-[1px] transition-transform duration-200">
+        <div className="bg-white rounded-xl p-6 shadow-levitated border-t border-white/60 border-b border-slate-200/60 hover:-translate-y-[1px] transition-all duration-200">
             <div className="flex justify-between items-start">
             <div>
                 {data.isStealth && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 mb-3 border border-slate-200">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100 mb-3">
                     <Shield className="w-3 h-3 mr-1" />
                     Stealth Mode
                 </span>
@@ -62,7 +62,7 @@ const ChallengeCard = ({ data }: { data: ChallengeInput }) => {
                 <span key={tag} className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-md">
                     {tag}
                 </span>
-                ))}
+                ))} 
             </div>
             <button onClick={() => navigate('/challenge/123')} className="text-sm font-medium text-slate-900 hover:text-blue-600 transition-colors">
                 View Details →
@@ -72,10 +72,24 @@ const ChallengeCard = ({ data }: { data: ChallengeInput }) => {
     )
 };
 
+const StatCard = ({ label, value }: { label: string, value: string }) => (
+    <div className="bg-slate-100/50 shadow-inner border border-slate-200 rounded-lg p-3">
+        <p className="text-xs text-slate-500 uppercase tracking-wider">{label}</p>
+        <p className="font-mono font-bold text-slate-900 text-xl">{value}</p>
+    </div>
+);
+
 export default function ChallengeFeed() {
   return (
     <div className="max-w-3xl mx-auto py-8 px-4">
-      <div className="flex justify-between items-end mb-8">
+        {/* Stats Bar */}
+        <div className="grid grid-cols-3 gap-4 mb-8">
+            <StatCard label="Total Liquidity" value="$4.2M" />
+            <StatCard label="Open Bounties" value="12" />
+            <StatCard label="Avg. TTM" value="14 Days" />
+        </div>
+
+      <div className="flex justify-between items-end mb-6">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Active Challenges</h2>
           <p className="text-slate-500 mt-1">Real-time opportunities matching your stack.</p>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, ArrowLeft, Building2, Lock, CheckCircle, AlertCircle, Circle } from 'lucide-react';
+import { Shield, ArrowLeft, Building2, Lock, Circle, CheckCircle2 } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import type { ChallengeInput, EscrowStatus, Milestone } from '../../lib/schemas';
 
@@ -22,15 +22,13 @@ const MOCK_DETAIL: ChallengeInput = {
 const getStatusAppearance = (status: EscrowStatus) => {
   switch (status) {
     case 'pending_funding':
-      return { label: 'UNFUNDED', color: 'text-slate-500', icon: <Circle className="w-5 h-5 text-slate-400" /> };
+      return { label: 'UNFUNDED', color: 'text-slate-500', icon: <Circle className="w-5 h-5 text-slate-300" /> };
     case 'funded_in_escrow':
-      return { label: 'IN ESCROW', color: 'text-amber-600', icon: <Lock className="w-5 h-5 text-amber-500" /> };
+      return { label: 'FUNDS SECURED', color: 'text-amber-600', icon: <Lock className="w-5 h-5 text-amber-500" /> };
     case 'released':
-      return { label: 'PAID', color: 'text-emerald-600', icon: <CheckCircle className="w-5 h-5 text-emerald-500" /> };
-    case 'disputed':
-      return { label: 'DISPUTED', color: 'text-red-600', icon: <AlertCircle className="w-5 h-5 text-red-500" /> };
+      return { label: 'PAID', color: 'text-emerald-600', icon: <CheckCircle2 className="w-5 h-5 text-emerald-500" /> };
     default:
-      return { label: 'UNKNOWN', color: 'text-slate-500', icon: <Circle className="w-5 h-5 text-slate-400" /> };
+      return { label: 'UNKNOWN', color: 'text-slate-500', icon: <Circle className="w-5 h-5 text-slate-300" /> };
   }
 };
 
@@ -59,7 +57,7 @@ export default function ChallengeDetail() {
       </Link>
 
       {/* Header Card */}
-      <div className="bg-white rounded-xl p-8 shadow-levitated border border-slate-200 mb-8">
+      <div className="bg-white rounded-xl p-8 shadow-levitated border-t border-white/60 border-b border-slate-200/60 mb-8">
         <div className="flex justify-between items-start mb-6">
           <div>
             {MOCK_DETAIL.isStealth ? (
@@ -129,9 +127,9 @@ export default function ChallengeDetail() {
         <button 
           onClick={handleFundEscrow}
           disabled={isFundingComplete}
-          className="flex-1 bg-slate-900 text-white text-lg font-semibold py-4 rounded-xl shadow-lg shadow-slate-900/20 hover:-translate-y-0.5 transition-all disabled:bg-slate-400 disabled:cursor-not-allowed disabled:shadow-none"
+          className="flex-1 bg-slate-900 text-white text-lg font-semibold py-4 rounded-xl shadow-lg shadow-slate-900/20 hover:-translate-y-0.5 transition-all active:scale-[0.98] disabled:bg-slate-400 disabled:cursor-not-allowed disabled:shadow-none"
         >
-          {isFundingComplete ? "Funds Secured (Mock)" : "Fund Next Milestone"}
+          {isFundingComplete ? "Funds Secured" : "Fund Next Milestone"}
         </button>
         <button className="px-8 py-4 bg-white text-slate-700 font-semibold rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors">
           Message Lead
