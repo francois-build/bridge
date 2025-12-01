@@ -1,8 +1,6 @@
 
-import React from 'react';
 import { Shield, Clock, Zap, Building2 } from 'lucide-react';
 import type { ChallengeInput } from '../../lib/schemas';
-import { ChallengeFeed } from './ChallengeFeed';
 
 // Adversarial Mock Data
 const ADVERSARIAL_CHALLENGES: ChallengeInput[] = [
@@ -13,7 +11,8 @@ const ADVERSARIAL_CHALLENGES: ChallengeInput[] = [
     budgetRange: '50k-250k',
     isStealth: false,
     industryTags: ['Stress Test', 'UI/UX'],
-    publicAlias: "Text Bomb Corp"
+    publicAlias: "Text Bomb Corp",
+    milestones: [],
   },
   // Case B: The Empty State
   {
@@ -22,7 +21,8 @@ const ADVERSARIAL_CHALLENGES: ChallengeInput[] = [
     budgetRange: '<50k',
     isStealth: false,
     industryTags: [],
-    publicAlias: "Empty State Inc"
+    publicAlias: "Empty State Inc",
+    milestones: [],
   },
   // Case C: The Stealth Leak
   {
@@ -32,7 +32,8 @@ const ADVERSARIAL_CHALLENGES: ChallengeInput[] = [
     isStealth: true,
     industryTags: ['Security', 'Privacy'],
     publicAlias: "Top Secret Corp",
-    clientName: "ThisShouldNotBeVisible" // Adversarial field
+    clientName: "ThisShouldNotBeVisible", // Adversarial field
+    milestones: [],
   } as any,
 ];
 
@@ -101,7 +102,7 @@ const ChallengeCard = ({ data }: { data: ChallengeInput }) => (
     </div>
   );
  
-  export const RedTeamFeed = () => {
+  export default function RedTeamFeed() {
    return (
      <div className="max-w-4xl mx-auto py-12 px-4">
        <div className="flex justify-between items-end mb-10">

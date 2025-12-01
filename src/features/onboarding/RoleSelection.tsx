@@ -1,4 +1,3 @@
-import React from 'react';
 import { Briefcase, Code, Share2 } from 'lucide-react';
 
 const roles = [

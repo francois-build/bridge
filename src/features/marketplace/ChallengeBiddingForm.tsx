@@ -1,22 +1,31 @@
 import { useForm, useFieldArray } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChallengeInputSchema, ChallengeInput } from '../../lib/schemas';
-import { PlusCircle, Trash2, AlertTriangle } from 'lucide-react';
+import { z } from 'zod';
+import { ChallengeInputSchema } from '../../lib/schemas';
+import { PlusCircle, Trash2 } from 'lucide-react';
+
+// Define the schema's input and output types
+type ChallengeFormInput = z.input<typeof ChallengeInputSchema>;
+type ChallengeOutputValues = z.output<typeof ChallengeInputSchema>;
 
 export default function ChallengeBiddingForm() {
   const {
     register,
-    control, 
+    control,
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<ChallengeInput>({
+  } = useForm<ChallengeFormInput>({
     resolver: zodResolver(ChallengeInputSchema),
     defaultValues: {
       title: '',
       description: '',
-      industryTags: [],
-      milestones: [{ title: 'Project Completion', payoutPercentage: 100, description: 'Final deliverable' }],
+      budgetRange: '<50k',
+      isStealth: false,
+      publicAlias: '',
+      industryTags: '', // Default to an empty string
+      milestones: [{ title: 'Project Completion', payoutPercentage: 100, description: '', status: 'pending_funding' }],
     },
   });
 
@@ -25,7 +34,7 @@ export default function ChallengeBiddingForm() {
     name: "milestones",
   });
 
-  const onSubmit = (data: ChallengeInput) => {
+  const onSubmit: SubmitHandler<ChallengeOutputValues> = (data) => {
     console.log('Form data submitted:', data);
     alert('Challenge submitted! Check the console for the data.');
   };
@@ -63,7 +72,7 @@ export default function ChallengeBiddingForm() {
           <div>
             <label htmlFor="industryTags" className="block text-sm font-medium text-slate-700 dark:text-slate-300">Industry Tags (comma-separated)</label>
             <input {...register('industryTags')} id="industryTags" className="mt-1 block w-full px-3 py-2 bg-slate-100 dark:bg-slate-900 border rounded-md shadow-concave dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-600" />
-            {errors.industryTags && <p className="mt-1 text-sm text-red-600">{errors.industryTags.message}</p>}
+            {errors.industryTags && <p className="mt-1 text-sm text-red-600">{(errors.industryTags as any).message}</p>}
           </div>
         </div>
         
@@ -117,7 +126,7 @@ export default function ChallengeBiddingForm() {
 
         <button
           type="button"
-          onClick={() => append({ title: '', payoutPercentage: 10, description: '' })}
+          onClick={() => append({ title: '', payoutPercentage: 10, description: '', status: 'pending_funding' })}
           className="mt-4 flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700"
         >
           <PlusCircle className="w-4 h-4" />
@@ -131,7 +140,7 @@ export default function ChallengeBiddingForm() {
             <div className="font-bold text-lg">Total: {totalPercentage}%</div>
             {errors.milestones?.root && 
               <div className="flex items-center gap-2 text-sm text-red-700 dark:text-red-300">
-                <AlertTriangle className="w-4 h-4" />
+                
                 <span>{errors.milestones.root.message}</span>
               </div>
             }
