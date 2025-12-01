@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Clock, Shield } from 'lucide-react';
-import { ChallengeInput } from '../../lib/schemas';
+import type { ChallengeInput } from '../../lib/schemas';
 
-// Mock Data for MVP Preview
+// Mock Data: Compliant with Schema (min 1 milestone)
 const MOCK_CHALLENGES: ChallengeInput[] = [
   {
     title: "Warehouse Theft Prevention (Edge Compute)",
@@ -12,7 +12,9 @@ const MOCK_CHALLENGES: ChallengeInput[] = [
     isStealth: true,
     industryTags: ['Logistics', 'Computer Vision'],
     publicAlias: "Fortune 500 Retailer",
-    milestones: []
+    milestones: [
+        { title: "Scoping", payoutPercentage: 100, status: 'pending_funding' }
+    ]
   },
   {
     title: "Generative Customer Support Agent",
@@ -20,7 +22,9 @@ const MOCK_CHALLENGES: ChallengeInput[] = [
     budgetRange: '<50k',
     isStealth: false,
     industryTags: ['Fintech', 'GenAI'],
-    milestones: []
+    milestones: [
+        { title: "MVP Delivery", payoutPercentage: 100, status: 'pending_funding' }
+    ]
   }
 ];
 
