@@ -57,7 +57,7 @@ export default function ChallengeDetail() {
       </Link>
 
       {/* Header Card */}
-      <div className="bg-white rounded-xl p-8 shadow-levitated border-t border-white/60 border-b border-slate-200/60 mb-8">
+      <div className="bg-white rounded-2xl p-8 shadow-ceramic border border-slate-100 mb-8">
         <div className="flex justify-between items-start mb-6">
           <div>
             {MOCK_DETAIL.isStealth ? (
@@ -103,7 +103,7 @@ export default function ChallengeDetail() {
         {milestones.map((ms: Milestone, idx: number) => {
           const { label, color, icon } = getStatusAppearance(ms.status);
           return (
-            <div key={idx} className="flex items-center p-5 border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
+            <div key={idx} className="flex items-center p-5 even:bg-slate-50/50 border-b border-slate-100 last:border-0">
               <div className="flex-shrink-0 mr-4">
                 <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200">
                     {icon}
@@ -127,7 +127,7 @@ export default function ChallengeDetail() {
         <button 
           onClick={handleFundEscrow}
           disabled={isFundingComplete}
-          className="flex-1 bg-slate-900 text-white text-lg font-semibold py-4 rounded-xl shadow-lg shadow-slate-900/20 hover:-translate-y-0.5 transition-all active:scale-[0.98] disabled:bg-slate-400 disabled:cursor-not-allowed disabled:shadow-none"
+          className="w-full bg-slate-900 text-white font-semibold py-4 rounded-xl shadow-mechanical transition ease-in-out duration-200 hover:scale-[1.02] active:scale-[0.95] active:shadow-inner disabled:bg-slate-400 disabled:cursor-not-allowed disabled:shadow-none"
         >
           {isFundingComplete ? "Funds Secured" : "Fund Next Milestone"}
         </button>

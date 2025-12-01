@@ -31,11 +31,11 @@ const MOCK_CHALLENGES: ChallengeInput[] = [
 const ChallengeCard = ({ data }: { data: ChallengeInput }) => {
     const navigate = useNavigate();
     return (
-        <div className="bg-white rounded-xl p-6 shadow-levitated border-t border-white/60 border-b border-slate-200/60 hover:-translate-y-[1px] transition-all duration-200">
+        <div className="group relative bg-white rounded-xl p-6 transition-all duration-300 border-t border-white border-b-2 border-slate-100 hover:-translate-y-1 hover:shadow-levitated hover:border-blue-100">
             <div className="flex justify-between items-start">
             <div>
                 {data.isStealth && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100 mb-3">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100 ring-1 ring-amber-500/10 mb-3">
                     <Shield className="w-3 h-3 mr-1" />
                     Stealth Mode
                 </span>
@@ -72,22 +72,27 @@ const ChallengeCard = ({ data }: { data: ChallengeInput }) => {
     )
 };
 
-const StatCard = ({ label, value }: { label: string, value: string }) => (
-    <div className="bg-slate-100/50 shadow-inner border border-slate-200 rounded-lg p-3">
-        <p className="text-xs text-slate-500 uppercase tracking-wider">{label}</p>
-        <p className="font-mono font-bold text-slate-900 text-xl">{value}</p>
+const StatsDeck = () => (
+    <div className="bg-slate-100 rounded-xl p-4 border border-slate-200 shadow-inner flex justify-between text-center mb-8">
+        <div>
+            <p className="text-xs text-slate-500 uppercase tracking-wider">Total Liquidity</p>
+            <p className="font-mono font-bold text-slate-700 text-xl">$4.2M</p>
+        </div>
+        <div>
+            <p className="text-xs text-slate-500 uppercase tracking-wider">Active Bounties</p>
+            <p className="font-mono font-bold text-slate-700 text-xl">12</p>
+        </div>
+        <div>
+            <p className="text-xs text-slate-500 uppercase tracking-wider">Avg. TTM</p>
+            <p className="font-mono font-bold text-slate-700 text-xl">14 Days</p>
+        </div>
     </div>
 );
 
 export default function ChallengeFeed() {
   return (
     <div className="max-w-3xl mx-auto py-8 px-4">
-        {/* Stats Bar */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
-            <StatCard label="Total Liquidity" value="$4.2M" />
-            <StatCard label="Open Bounties" value="12" />
-            <StatCard label="Avg. TTM" value="14 Days" />
-        </div>
+      <StatsDeck />
 
       <div className="flex justify-between items-end mb-6">
         <div>
