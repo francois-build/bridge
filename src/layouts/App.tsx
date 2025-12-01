@@ -1,8 +1,7 @@
-
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { Layout, PlusCircle } from 'lucide-react';
-import { ChallengeDetail } from '../features/marketplace/ChallengeDetail';
+import ChallengeDetail from '../features/marketplace/ChallengeDetail';
 
 const Onboarding = lazy(() => import('../features/onboarding/Onboarding'));
 const ChallengeBiddingForm = lazy(() => import('../features/marketplace/ChallengeBiddingForm'));

@@ -17,11 +17,14 @@ export const ChallengeInputSchema = z.object({
   description: z.string().min(50, "Detailed prompts required"),
   budgetRange: z.enum(['<50k', '50k-250k', '250k+']),
   isStealth: z.boolean().default(false),
-  publicAlias: z.string().max(50).optional(), // For "Fortune 500 Co" masking
+  publicAlias: z.string().max(50).optional(),
+  
+  // Preprocess handles the String -> Array conversion
   industryTags: z.preprocess(
-    (val) => typeof val === 'string' ? val.split(',').map(t => t.trim()).filter(Boolean) : val,
-    z.array(z.string()).min(1, "At least one industry tag is required.")
+    (val) => (typeof val === 'string' ? val.split(',').map(t => t.trim()).filter(Boolean) : val),
+    z.array(z.string()).min(1, "At least one tag is required")
   ),
+
   milestones: z.array(MilestoneSchema).min(1, "At least one milestone is required.")
     .refine(
       (milestones) =>
