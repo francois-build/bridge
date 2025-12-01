@@ -4,12 +4,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ChallengeInputSchema } from '../../lib/schemas';
 import { PlusCircle, Trash2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 // Define the schema's input and output types
 type ChallengeFormInput = z.input<typeof ChallengeInputSchema>;
 type ChallengeOutputValues = z.output<typeof ChallengeInputSchema>;
 
 export default function ChallengeBiddingForm() {
+  const navigate = useNavigate();
   const {
     register,
     control,
@@ -37,6 +39,7 @@ export default function ChallengeBiddingForm() {
   const onSubmit: SubmitHandler<ChallengeOutputValues> = (data) => {
     console.log('Form data submitted:', data);
     alert('Challenge submitted! Check the console for the data.');
+    navigate('/');
   };
   
   const milestoneValues = watch("milestones");
