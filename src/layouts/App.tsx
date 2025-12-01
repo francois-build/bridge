@@ -4,6 +4,7 @@ import { RoleSelection } from '../features/onboarding/RoleSelection';
 // Use Default Imports to match the lazy loading fixes we made
 import ChallengeFeed from '../features/marketplace/ChallengeFeed';
 import ChallengeDetail from '../features/marketplace/ChallengeDetail';
+import ChallengeBiddingForm from '../features/marketplace/ChallengeBiddingForm';
 
 export default function App() {
   const [role, setRole] = useState<string | null>(null);
@@ -35,6 +36,7 @@ export default function App() {
         <main className="animate-in fade-in duration-500">
           <Routes>
             <Route path="/" element={<ChallengeFeed />} />
+            <Route path="/challenge/new" element={<ChallengeBiddingForm />} />
             <Route path="/challenge/:id" element={<ChallengeDetail />} />
             {/* Catch-all redirect */}
             <Route path="*" element={<Navigate to="/" replace />} />

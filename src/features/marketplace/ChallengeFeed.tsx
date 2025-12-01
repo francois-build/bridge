@@ -100,6 +100,7 @@ const StatsDeck = () => (
 );
 
 export default function ChallengeFeed() {
+  const navigate = useNavigate();
   return (
     <div className="max-w-3xl mx-auto py-8 px-4">
       <StatsDeck />
@@ -109,7 +110,7 @@ export default function ChallengeFeed() {
           <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Active Challenges</h2>
           <p className="text-slate-500 mt-1">Real-time opportunities matching your stack.</p>
         </div>
-        <button className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg shadow-slate-900/20 hover:translate-y-[-1px] transition-all">
+        <button onClick={() => navigate('/challenge/new')} className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg shadow-slate-900/20 hover:translate-y-[-1px] transition-all">
           + Post Challenge
         </button>
       </div>
