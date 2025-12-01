@@ -26,12 +26,7 @@ export default function ChallengeBiddingForm() {
   });
 
   const onSubmit = (data: ChallengeInput) => {
-    // Transform comma-separated string into an array of strings
-    const formattedData = {
-        ...data,
-        industryTags: (data.industryTags as any).split(',').map((tag: string) => tag.trim()),
-      };
-    console.log('Form data submitted:', formattedData);
+    console.log('Form data submitted:', data);
     alert('Challenge submitted! Check the console for the data.');
   };
   
@@ -67,7 +62,7 @@ export default function ChallengeBiddingForm() {
           </div>
           <div>
             <label htmlFor="industryTags" className="block text-sm font-medium text-slate-700 dark:text-slate-300">Industry Tags (comma-separated)</label>
-            <input {...register('industryTags' as any)} id="industryTags" className="mt-1 block w-full px-3 py-2 bg-slate-100 dark:bg-slate-900 border rounded-md shadow-concave dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+            <input {...register('industryTags')} id="industryTags" className="mt-1 block w-full px-3 py-2 bg-slate-100 dark:bg-slate-900 border rounded-md shadow-concave dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-600" />
             {errors.industryTags && <p className="mt-1 text-sm text-red-600">{errors.industryTags.message}</p>}
           </div>
         </div>

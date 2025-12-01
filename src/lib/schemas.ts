@@ -18,7 +18,10 @@ export const ChallengeInputSchema = z.object({
   budgetRange: z.enum(['<50k', '50k-250k', '250k+']),
   isStealth: z.boolean().default(false),
   publicAlias: z.string().max(50).optional(), // For "Fortune 500 Co" masking
-  industryTags: z.array(z.string()).min(1),
+  industryTags: z.preprocess(
+    (val) => typeof val === 'string' ? val.split(',').map(t => t.trim()).filter(Boolean) : val,
+    z.array(z.string()).min(1, "At least one industry tag is required.")
+  ),
   milestones: z.array(MilestoneSchema).min(1, "At least one milestone is required.")
     .refine(
       (milestones) =>

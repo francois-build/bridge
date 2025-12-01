@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Shield, Clock, Zap, Building2 } from 'lucide-react';
 import type { ChallengeInput } from '../../lib/schemas';
 
@@ -10,7 +11,8 @@ const MOCK_CHALLENGES: ChallengeInput[] = [
     budgetRange: '50k-250k',
     isStealth: true,
     industryTags: ['Logistics', 'Computer Vision', 'IoT'],
-    publicAlias: "Fortune 500 Retailer"
+    publicAlias: "Fortune 500 Retailer",
+    milestones: [],
   },
   {
     title: "Generative Customer Support Agent",
@@ -18,7 +20,8 @@ const MOCK_CHALLENGES: ChallengeInput[] = [
     budgetRange: '250k+',
     isStealth: false, // Public
     industryTags: ['Fintech', 'GenAI', 'Automation'],
-    publicAlias: "NeoBank Corp" 
+    publicAlias: "NeoBank Corp",
+    milestones: [],
   },
   {
     title: "AgTech Soil Sensor Network",
@@ -26,11 +29,15 @@ const MOCK_CHALLENGES: ChallengeInput[] = [
     budgetRange: '<50k',
     isStealth: true,
     industryTags: ['AgTech', 'Hardware', 'Sustainability'],
-    publicAlias: "Midwest Coop"
+    publicAlias: "Midwest Coop",
+    milestones: [],
   }
 ];
 
-const ChallengeCard = ({ data }: { data: ChallengeInput }) => (
+const ChallengeCard = ({ data }: { data: ChallengeInput }) => {
+  const navigate = useNavigate();
+
+  return (
   <div className="group relative flex flex-col p-6 transition-all duration-200
     bg-white rounded-xl shadow-sm 
     border-t border-white/60 border-b border-slate-200/60 border-x border-slate-100
@@ -83,7 +90,9 @@ const ChallengeCard = ({ data }: { data: ChallengeInput }) => (
         )}
       </div>
 
-      <button className="flex items-center gap-2 text-sm font-semibold bg-slate-900 text-white px-4 py-2 rounded-lg 
+      <button 
+        onClick={() => navigate('/challenge/123')}
+        className="flex items-center gap-2 text-sm font-semibold bg-slate-900 text-white px-4 py-2 rounded-lg 
         shadow-lg shadow-slate-900/20 
         transition-all duration-200
         hover:-translate-y-[1px] hover:shadow-xl hover:bg-slate-800
@@ -93,7 +102,7 @@ const ChallengeCard = ({ data }: { data: ChallengeInput }) => (
       </button>
     </div>
   </div>
-);
+)};
 
 export const ChallengeFeed = () => {
   return (
