@@ -4,11 +4,16 @@
  */
 import { z } from 'zod';
 
+// Escrow Status Schema
+export const EscrowStatusSchema = z.enum(['pending_funding', 'funded_in_escrow', 'released', 'disputed']);
+
 // Milestone Schema
 export const MilestoneSchema = z.object({
   title: z.string().min(5, "Milestone title required"),
   payoutPercentage: z.number().min(1).max(100),
   description: z.string().optional(),
+  status: EscrowStatusSchema.default('pending_funding'),
+  amount: z.number().optional(), // Calculated from % of total budget
 });
 
 // Core Challenge Schema
@@ -39,6 +44,7 @@ export const ChallengeInputSchema = z.object({
 // User Role Schema
 export const UserRoleSchema = z.enum(['solver', 'seeker', 'connector']);
 
+export type EscrowStatus = z.infer<typeof EscrowStatusSchema>;
 export type Milestone = z.infer<typeof MilestoneSchema>;
 export type ChallengeInput = z.infer<typeof ChallengeInputSchema>;
 export type UserRole = z.infer<typeof UserRoleSchema>;

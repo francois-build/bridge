@@ -1,9 +1,9 @@
 import React from 'react';
-import { Shield, ArrowLeft, CheckCircle2, Building2, Calendar } from 'lucide-react';
+import { Shield, ArrowLeft, Building2, Lock, CheckCircle, AlertCircle, Circle } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
-import type { ChallengeInput } from '../../lib/schemas';
+import type { ChallengeInput, EscrowStatus, Milestone } from '../../lib/schemas';
 
-// Mock Data for the View
+// Mock Data for the View - now with various statuses
 const MOCK_DETAIL: ChallengeInput = {
   title: "Warehouse Theft Prevention (Edge Compute)",
   description: "We are experiencing 4% shrinkage in our Midwest distribution centers. We need a CV solution that runs on-premise (Nvidia Jetson) to detect unauthorized item removal. Must integrate with existing Genetec VMS.",
@@ -12,11 +12,28 @@ const MOCK_DETAIL: ChallengeInput = {
   publicAlias: "Fortune 500 Retailer",
   industryTags: ['Logistics', 'Computer Vision', 'Edge AI'],
   milestones: [
-    { title: "Proof of Concept", payoutPercentage: 20, description: "Demonstrate detection on 1h of sample footage." },
-    { title: "On-Site Pilot", payoutPercentage: 40, description: "Deploy to 1 warehouse for 30 days." },
-    { title: "Final Rollout", payoutPercentage: 40, description: "System hardening and handoff." }
+    { title: "Project Kickoff", payoutPercentage: 10, description: "Initial requirements gathering", status: 'released' },
+    { title: "Proof of Concept", payoutPercentage: 20, description: "Demonstrate detection on 1h of sample footage.", status: 'funded_in_escrow' },
+    { title: "On-Site Pilot", payoutPercentage: 40, description: "Deploy to 1 warehouse for 30 days.", status: 'pending_funding' },
+    { title: "Final Rollout", payoutPercentage: 30, description: "System hardening and handoff.", status: 'pending_funding' }
   ]
 };
+
+const getStatusAppearance = (status: EscrowStatus) => {
+  switch (status) {
+    case 'pending_funding':
+      return { label: 'UNFUNDED', color: 'text-slate-500', icon: <Circle className="w-5 h-5 text-slate-400" /> };
+    case 'funded_in_escrow':
+      return { label: 'IN ESCROW', color: 'text-amber-600', icon: <Lock className="w-5 h-5 text-amber-500" /> };
+    case 'released':
+      return { label: 'PAID', color: 'text-emerald-600', icon: <CheckCircle className="w-5 h-5 text-emerald-500" /> };
+    case 'disputed':
+      return { label: 'DISPUTED', color: 'text-red-600', icon: <AlertCircle className="w-5 h-5 text-red-500" /> };
+    default:
+      return { label: 'UNKNOWN', color: 'text-slate-500', icon: <Circle className="w-5 h-5 text-slate-400" /> };
+  }
+};
+
 
 export default function ChallengeDetail() {
   const { id } = useParams();
@@ -71,23 +88,26 @@ export default function ChallengeDetail() {
       {/* Milestones (The Deal Structure) */}
       <h3 className="text-xl font-bold text-slate-900 mb-4 px-1">Payout Schedule</h3>
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-8">
-        {MOCK_DETAIL.milestones.map((ms, idx) => (
-          <div key={idx} className="flex items-center p-5 border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
-            <div className="flex-shrink-0 mr-4">
-              <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-mono text-sm font-bold border border-slate-200">
-                {idx + 1}
+        {MOCK_DETAIL.milestones.map((ms: Milestone, idx: number) => {
+          const { label, color, icon } = getStatusAppearance(ms.status);
+          return (
+            <div key={idx} className="flex items-center p-5 border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
+              <div className="flex-shrink-0 mr-4">
+                <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200">
+                    {icon}
+                </div>
+              </div>
+              <div className="flex-grow">
+                <h4 className="font-semibold text-slate-900">{ms.title}</h4>
+                <p className="text-sm text-slate-500">{ms.description}</p>
+              </div>
+              <div className="flex-shrink-0 ml-4 text-right">
+                <span className="block text-lg font-bold text-emerald-600">{ms.payoutPercentage}%</span>
+                <span className={`text-xs font-mono font-bold tracking-wider ${color}`}>{label}</span>
               </div>
             </div>
-            <div className="flex-grow">
-              <h4 className="font-semibold text-slate-900">{ms.title}</h4>
-              <p className="text-sm text-slate-500">{ms.description}</p>
-            </div>
-            <div className="flex-shrink-0 ml-4 text-right">
-              <span className="block text-lg font-bold text-emerald-600">{ms.payoutPercentage}%</span>
-              <span className="text-xs text-slate-400">of budget</span>
-            </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       {/* Action Bar */}
