@@ -1,83 +1,34 @@
 import React from 'react';
-import { Briefcase, Search, Users } from 'lucide-react';
+import { Briefcase, Code, Share2 } from 'lucide-react';
 
-interface RoleCardProps {
-  icon: React.ElementType;
-  title: string;
-  roleName: string; // Added to match "Role:" line in User Flow
-  desc: string;
-  onClick: () => void;
-}
-
-const RoleCard = ({ icon: Icon, title, roleName, desc, onClick }: RoleCardProps) => (
-  <button 
-    onClick={onClick}
-    className="group relative flex flex-col items-start p-6 w-full text-left transition-all duration-200
-      bg-white rounded-xl shadow-sm 
-      border-t border-white/60 border-b border-slate-200/60 border-x border-slate-100
-      hover:shadow-md hover:-translate-y-[1px] hover:border-blue-200"
-  >
-    <div className="p-3 rounded-lg bg-slate-50 border border-slate-100 group-hover:bg-blue-50 transition-colors">
-      <Icon className="w-6 h-6 text-slate-900 group-hover:text-blue-600" />
-    </div>
-    
-    <div className="mt-5">
-      <h3 className="text-lg font-bold text-slate-900 tracking-tight">{title}</h3>
-      <div className="mt-1 flex items-center gap-2">
-        <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-600"></span>
-        <span className="text-xs font-mono font-medium text-slate-500 uppercase tracking-wider">
-          {roleName}
-        </span>
-      </div>
-    </div>
-    
-    <p className="mt-3 text-sm text-slate-500 leading-relaxed font-medium">
-      {desc}
-    </p>
-  </button>
-);
+const roles = [
+  { name: 'Seeker', description: 'Post challenges, find talent.', icon: <Briefcase className="w-8 h-8 mx-auto mb-4 text-blue-500" /> },
+  { name: 'Solver', description: 'Solve challenges, earn bounties.', icon: <Code className="w-8 h-8 mx-auto mb-4 text-emerald-500" /> },
+  { name: 'Connector', description: 'Broker deals, earn commissions.', icon: <Share2 className="w-8 h-8 mx-auto mb-4 text-amber-500" /> },
+];
 
 export const RoleSelection = ({ onSelect }: { onSelect: (role: string) => void }) => {
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-      <div className="max-w-5xl w-full">
-        <div className="text-center mb-16">
-          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
-            How do you want to use Bridge?
-          </h1>
-          <p className="mt-3 text-slate-500 text-lg">
-            Select your operating mode to configure your workspace.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Card A: Strict User Flow Copy */}
-          <RoleCard 
-            icon={Briefcase}
-            title="I want to solve problems"
-            roleName="Startup (Solver)"
-            desc="Fast-track diligence, skip the forms, and win enterprise pilots."
-            onClick={() => onSelect('solver')}
-          />
-          
-          {/* Card B: Strict User Flow Copy */}
-          <RoleCard 
-            icon={Search}
-            title="I want to find solutions"
-            roleName="Enterprise (Seeker)"
-            desc="Post challenges, benchmark against peers, and find verified vendors."
-            onClick={() => onSelect('seeker')}
-          />
-          
-          {/* Card C: Strict User Flow Copy */}
-          <RoleCard 
-            icon={Users}
-            title="I want to refer startups"
-            roleName="Scout (Connector)"
-            desc="Monetize your network by referring high-quality founders to pilots."
-            onClick={() => onSelect('connector')}
-          />
-        </div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-slate-100 p-4">
+      <div className="text-center mb-12 animate-in fade-in slide-in-from-top duration-500">
+        <h1 className="text-4xl font-bold text-slate-800 tracking-tight">Welcome to BRIDGE</h1>
+        <p className="text-lg text-slate-600 mt-2">The open marketplace for technical challenges.</p>
+      </div>
+      
+      <div className="grid md:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-12 duration-700">
+        {roles.map((role) => (
+          <button
+            key={role.name}
+            onClick={() => onSelect(role.name.toLowerCase())}
+            className="p-8 bg-white rounded-xl shadow-lg border border-slate-200 
+                       hover:shadow-xl hover:-translate-y-1 transition-all
+                       focus:outline-none focus:ring-4 focus:ring-blue-300"
+          >
+            {role.icon}
+            <h3 className="text-xl font-semibold text-slate-900 mb-1">{role.name}</h3>
+            <p className="text-slate-500">{role.description}</p>
+          </button>
+        ))}
       </div>
     </div>
   );

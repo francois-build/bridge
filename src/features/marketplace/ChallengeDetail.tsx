@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Shield, ArrowLeft, Building2, Lock, CheckCircle, AlertCircle, Circle } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import type { ChallengeInput, EscrowStatus, Milestone } from '../../lib/schemas';
@@ -34,9 +34,23 @@ const getStatusAppearance = (status: EscrowStatus) => {
   }
 };
 
-
 export default function ChallengeDetail() {
   const { id } = useParams();
+  const [milestones, setMilestones] = useState(MOCK_DETAIL.milestones);
+
+  const handleFundEscrow = () => {
+    setMilestones(currentMilestones => {
+      const firstPendingIndex = currentMilestones.findIndex(m => m.status === 'pending_funding');
+      if (firstPendingIndex === -1) {
+        return currentMilestones; // No pending milestones left
+      }
+      const newMilestones = [...currentMilestones];
+      newMilestones[firstPendingIndex] = { ...newMilestones[firstPendingIndex], status: 'funded_in_escrow' };
+      return newMilestones;
+    });
+  };
+
+  const isFundingComplete = !milestones.some(m => m.status === 'pending_funding');
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
@@ -88,7 +102,7 @@ export default function ChallengeDetail() {
       {/* Milestones (The Deal Structure) */}
       <h3 className="text-xl font-bold text-slate-900 mb-4 px-1">Payout Schedule</h3>
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-8">
-        {MOCK_DETAIL.milestones.map((ms: Milestone, idx: number) => {
+        {milestones.map((ms: Milestone, idx: number) => {
           const { label, color, icon } = getStatusAppearance(ms.status);
           return (
             <div key={idx} className="flex items-center p-5 border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
@@ -112,8 +126,12 @@ export default function ChallengeDetail() {
 
       {/* Action Bar */}
       <div className="flex gap-4">
-        <button className="flex-1 bg-slate-900 text-white text-lg font-semibold py-4 rounded-xl shadow-lg shadow-slate-900/20 hover:-translate-y-0.5 transition-all">
-          Apply to Challenge
+        <button 
+          onClick={handleFundEscrow}
+          disabled={isFundingComplete}
+          className="flex-1 bg-slate-900 text-white text-lg font-semibold py-4 rounded-xl shadow-lg shadow-slate-900/20 hover:-translate-y-0.5 transition-all disabled:bg-slate-400 disabled:cursor-not-allowed disabled:shadow-none"
+        >
+          {isFundingComplete ? "Funds Secured (Mock)" : "Fund Next Milestone"}
         </button>
         <button className="px-8 py-4 bg-white text-slate-700 font-semibold rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors">
           Message Lead

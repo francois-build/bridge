@@ -1,41 +1,46 @@
-import { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { Layout, PlusCircle } from 'lucide-react';
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { RoleSelection } from '../features/onboarding/RoleSelection';
+// Use Default Imports to match the lazy loading fixes we made
+import ChallengeFeed from '../features/marketplace/ChallengeFeed';
 import ChallengeDetail from '../features/marketplace/ChallengeDetail';
 
-const Onboarding = lazy(() => import('../features/onboarding/Onboarding'));
-const ChallengeBiddingForm = lazy(() => import('../features/marketplace/ChallengeBiddingForm'));
-const ChallengeFeed = lazy(() => import('../features/marketplace/ChallengeFeed'));
-
 export default function App() {
+  const [role, setRole] = useState<string | null>(null);
+
+  // 1. The Gatekeeper: Force Role Selection first
+  if (!role) {
+    return <RoleSelection onSelect={setRole} />;
+  }
+
+  // 2. The Application Shell (Only renders after Role is selected)
   return (
-    <BrowserRouter>
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-50">
-        <header className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-800">
-          <div className="flex items-center gap-2">
-            <Layout className="w-6 h-6 text-slate-900 dark:text-slate-50" />
-            <h1 className="text-lg font-semibold">
-              <Link to="/">Marketplace</Link>
-            </h1>
+    <div className="min-h-screen bg-slate-50">
+      <BrowserRouter>
+        <nav className="h-16 bg-white border-b border-slate-200 flex items-center px-6 justify-between sticky top-0 z-50">
+          <span className="font-bold text-xl text-slate-900 tracking-tight">BRIDGE</span>
+          <div className="flex gap-4 items-center">
+            <span className="text-sm text-slate-500 capitalize px-3 py-1 bg-slate-100 rounded-full border border-slate-200">
+              {role} Workspace
+            </span>
+            <button 
+              onClick={() => setRole(null)} 
+              className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
+            >
+              Switch Role
+            </button>
           </div>
-          <nav>
-            <Link to="/challenge/new" className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
-              <PlusCircle className="w-4 h-4" />
-              <span>New Challenge</span>
-            </Link>
-          </nav>
-        </header>
-        <main className="p-4">
-          <Suspense fallback={<div className="text-center">Loading...</div>}>
-            <Routes>
-              <Route path="/" element={<ChallengeFeed />} />
-              <Route path="/challenge/:id" element={<ChallengeDetail />} />
-              <Route path="/onboarding" element={<Onboarding />} />
-              <Route path="/challenge/new" element={<ChallengeBiddingForm />} />
-            </Routes>
-          </Suspense>
+        </nav>
+        
+        <main className="animate-in fade-in duration-500">
+          <Routes>
+            <Route path="/" element={<ChallengeFeed />} />
+            <Route path="/challenge/:id" element={<ChallengeDetail />} />
+            {/* Catch-all redirect */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </main>
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
+    </div>
   );
 }
