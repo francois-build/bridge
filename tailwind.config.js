@@ -19,16 +19,16 @@ module.exports = {
     extend: {
       colors: {
         primary: '#0F172A', // slate-900 (Trust/Ink)
-        surface: '#F8FAFC', // slate-50 (Canvas)
+        'primary-muted': '#64748B', // slate-500
+        surface: '#F1F5F9', // slate-100 (Canvas)
         'surface-raised': '#FFFFFF', // white (Cards)
         action: '#2563EB', // blue-600 (Buttons/Links)
         success: '#10B981', // emerald-600 (Badges)
         warning: '#D97706', // amber-600 (Alerts)
       },
       boxShadow: {
-        'levitated': '0 8px 30px rgb(0 0 0 / 4%)',
-        'mechanical': '0 4px 14px 0 rgba(0,0,0,0.39)',
-        'concave': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
+        mechanical: '5px 5px 10px #a3a3a3, -5px -5px 10px #ffffff',
+        levitated: '10px 10px 20px #a3a3a3, -10px -10px 20px #ffffff',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],

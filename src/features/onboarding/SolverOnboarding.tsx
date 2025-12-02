@@ -1,138 +1,55 @@
-import { useState } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../../lib/firebase';
-import { UploadCloud, X, Tag, ShieldOff, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
 
-type FormValues = {
-  pitchDeck?: FileList;
-  similarTo: string;
-  competitors: { domain: string }[];
-};
+const SolverOnboarding = () => {
+  const [step, setStep] = useState(1);
 
-const staticTags = ['Fintech', 'API', 'Infrastructure', 'B2B', 'SaaS'];
-
-export default function SolverOnboarding() {
-  const { user } = useAuth();
-  const navigate = useNavigate();
-  const [showTags, setShowTags] = useState(false);
-
-  const { register, control, handleSubmit, watch } = useForm<FormValues>({
-    defaultValues: {
-      similarTo: '',
-      competitors: [{ domain: '' }],
-    },
-  });
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'competitors',
-  });
-
-  const similarToValue = watch('similarTo');
-
-  const onSubmit = async (data: FormValues) => {
-    if (!user) return;
-
-    // In a real app, you would process the PDF and use the extracted data.
-    // For now, we'll just save the other fields.
-    const profileData = {
-      similarTo: data.similarTo,
-      blockedCompetitors: data.competitors.map(c => c.domain).filter(Boolean),
-      onboardingComplete: true,
-      probationaryStatus: false, // Graduated from probationary status
-    };
-
-    const userRef = doc(db, 'users', user.uid);
-    await setDoc(userRef, profileData, { merge: true });
-
-    navigate('/');
-  };
+  const nextStep = () => setStep(step + 1);
+  const prevStep = () => setStep(step - 1);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 animate-in fade-in duration-500">
-      <div className="w-full max-w-2xl">
-        <h1 className="text-3xl font-bold text-slate-800 text-center mb-2">Welcome, Solver</h1>
-        <p className="text-slate-500 text-center mb-10">Let's build your profile so you can start solving.</p>
-        
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          {/* Deck-to-Data Drop Zone */}
-          <div className="space-y-2">
-            <label className="font-semibold text-slate-700">Profile Quick-Start</label>
-            <div className="relative border-dashed border-2 border-slate-300 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:border-blue-500 transition-colors duration-300">
-              <UploadCloud className="w-10 h-10 text-slate-400 mb-2" />
-              <p className="text-slate-600 font-semibold">Don't like forms? Drop your Pitch Deck here.</p>
-              <p className="text-sm text-slate-500">We'll use it to auto-fill your profile. PDF only.</p>
-              <input 
-                type="file"
-                {...register('pitchDeck')}
-                accept=".pdf"
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              />
-            </div>
-          </div>
-
-          {/* "Similar-To" Tagging */}
-          <div className="space-y-2">
-            <label htmlFor="similarTo" className="font-semibold text-slate-700 flex items-center"><Tag className="w-4 h-4 mr-2"/>Which company are you most like?</label>
-            <input
-              id="similarTo"
-              type="text"
-              {...register('similarTo')}
-              onFocus={() => setShowTags(true)}
-              placeholder="e.g. 'Plaid for Logistics'"
-              className="w-full p-3 bg-white rounded-md border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-            />
-            {showTags && similarToValue && (
-              <div className="flex flex-wrap gap-2 pt-2 animate-in fade-in duration-300">
-                {staticTags.map(tag => (
-                  <span key={tag} className="flex items-center bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
-                    {tag}
-                    <button type="button" className="ml-2 text-blue-500 hover:text-blue-700">
-                      <X size={14} />
-                    </button>
-                  </span>
-                ))}
+    <div className="min-h-screen bg-surface flex items-center justify-center p-4">
+      <div className="w-full max-w-lg">
+        <div className="bg-surface-raised rounded-lg shadow-levitated p-8">
+          <h2 className="text-3xl font-bold text-primary text-center mb-8">Solver Profile Setup</h2>
+          {step === 1 && (
+            <div>
+              <h3 className="text-xl font-bold text-primary mb-4">Step 1: Basic Information</h3>
+              <div className="flex flex-col gap-4">
+                <input type="text" placeholder="Full Name" className="w-full px-4 py-3 bg-surface border rounded-md shadow-concave focus:outline-none focus:ring-2 focus:ring-action" />
+                <input type="text" placeholder="Headline (e.g., Senior Software Engineer)" className="w-full px-4 py-3 bg-surface border rounded-md shadow-concave focus:outline-none focus:ring-2 focus:ring-action" />
+                <textarea placeholder="Short Bio" className="w-full px-4 py-3 bg-surface border rounded-md shadow-concave focus:outline-none focus:ring-2 focus:ring-action"></textarea>
               </div>
-            )}
-          </div>
-
-          {/* Competitor Cloaking */}
-          <div className="space-y-2">
-            <label className="font-semibold text-slate-700 flex items-center"><ShieldOff className="w-4 h-4 mr-2"/>Who should NOT see your sensitive data?</label>
-            <p className="text-sm text-slate-500">Add domains of companies to cloak your profile from.</p>
-            <div className="space-y-3">
-              {fields.map((field, index) => (
-                <div key={field.id} className="flex items-center gap-2">
-                  <input
-                    {...register(`competitors.${index}.domain`)}
-                    placeholder="e.g., competitor.com"
-                    className="flex-grow p-3 bg-white rounded-md border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  />
-                  <button type="button" onClick={() => remove(index)} className="p-2 text-slate-500 hover:text-red-600">
-                    <X size={18} />
-                  </button>
-                </div>
-              ))}
+              <button onClick={nextStep} className="w-full bg-action text-white mt-8 px-4 py-3 rounded-md shadow-mechanical hover:shadow-levitated transition-shadow">Next</button>
             </div>
-            <button
-              type="button"
-              onClick={() => append({ domain: '' })}
-              className="text-sm font-semibold text-blue-600 hover:text-blue-800 mt-2"
-            >
-              + Add another domain
-            </button>
-          </div>
-
-          {/* Completion Button */}
-          <div className="pt-4">
-            <button type="submit" className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-levitated hover:bg-blue-700 transition-all transform hover:scale-105">
-              Complete Profile <ArrowRight size={18} />
-            </button>
-          </div>
-        </form>
+          )}
+          {step === 2 && (
+            <div>
+              <h3 className="text-xl font-bold text-primary mb-4">Step 2: Skills & Experience</h3>
+              <div className="flex flex-col gap-4">
+                <input type="text" placeholder="Skills (comma-separated)" className="w-full px-4 py-3 bg-surface border rounded-md shadow-concave focus:outline-none focus:ring-2 focus:ring-action" />
+                <input type="text" placeholder="Portfolio/GitHub URL" className="w-full px-4 py-3 bg-surface border rounded-md shadow-concave focus:outline-none focus:ring-2 focus:ring-action" />
+                <input type="text" placeholder="LinkedIn Profile URL" className="w-full px-4 py-3 bg-surface border rounded-md shadow-concave focus:outline-none focus:ring-2 focus:ring-action" />
+              </div>
+              <div className="flex justify-between mt-8">
+                <button onClick={prevStep} className="w-1/3 bg-surface-raised text-primary px-4 py-3 rounded-md shadow-mechanical hover:shadow-levitated transition-shadow">Back</button>
+                <button onClick={nextStep} className="w-1/3 bg-action text-white px-4 py-3 rounded-md shadow-mechanical hover:shadow-levitated transition-shadow">Next</button>
+              </div>
+            </div>
+          )}
+          {step === 3 && (
+            <div>
+              <h3 className="text-xl font-bold text-primary mb-4">Step 3: Confirmation</h3>
+              <p className="text-primary-muted mb-8 text-center">You are all set! Review your information and start solving challenges.</p>
+              <div className="flex justify-between mt-8">
+                <button onClick={prevStep} className="w-1/3 bg-surface-raised text-primary px-4 py-3 rounded-md shadow-mechanical hover:shadow-levitated transition-shadow">Back</button>
+                <button className="w-1/3 bg-action text-white px-4 py-3 rounded-md shadow-mechanical hover:shadow-levitated transition-shadow">Complete Profile</button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default SolverOnboarding;

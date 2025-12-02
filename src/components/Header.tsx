@@ -29,53 +29,47 @@ const Header = () => {
   };
 
   return (
-    <nav className="bg-surface-raised shadow-levitated font-sans sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <div className="flex-shrink-0">
-            <Link to="/">
-                <Logo />
-            </Link>
-          </div>
-
-          <div className="hidden md:flex items-center space-x-8">
-            <Link to="/marketplace" className="text-primary hover:text-action transition-colors duration-150">Marketplace</Link>
-            <Link to="/seeker-dashboard" className="text-primary hover:text-action transition-colors duration-150">Seeker Dashboard</Link>
-            <Link to="/solver-hub" className="text-primary hover:text-action transition-colors duration-150">Solver Hub</Link>
-          </div>
-
-          <div className="hidden md:block">
-             <Link to="/login">
-                <button className="bg-action text-white font-bold py-2 px-6 rounded-lg shadow-mechanical transform hover:-translate-y-0.5 transition-transform duration-150">
-                    Login
-                </button>
-             </Link>
-          </div>
-
-          <div className="md:hidden flex items-center">
-            <button onClick={toggleMobileMenu} className="text-primary">
-              {isMobileMenuOpen ? <CloseIcon /> : <HamburgerIcon />}
-            </button>
-          </div>
+    <header className="bg-surface-raised shadow-mechanical sticky top-0 z-50">
+      <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="flex-shrink-0">
+          <Link to="/">
+              <Logo />
+          </Link>
         </div>
-      </div>
+
+        <div className="hidden md:flex items-center space-x-8">
+          <Link to="/marketplace" className="text-primary hover:text-action">Marketplace</Link>
+          <Link to="/seeker-dashboard" className="text-primary hover:text-action">Seeker Dashboard</Link>
+          <Link to="/solver-hub" className="text-primary hover:text-action">Solver Hub</Link>
+        </div>
+
+        <div className="hidden md:block">
+            <Link to="/login">
+              <button className="bg-action text-white px-4 py-2 rounded-md shadow-mechanical hover:shadow-levitated transition-shadow">Login</button>
+            </Link>
+        </div>
+
+        <div className="md:hidden flex items-center">
+          <button onClick={toggleMobileMenu} className="text-primary">
+            {isMobileMenuOpen ? <CloseIcon /> : <HamburgerIcon />}
+          </button>
+        </div>
+      </nav>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-surface h-screen fixed top-20 left-0 w-full">
+        <div className="md:hidden bg-surface-raised shadow-mechanical h-screen fixed top-20 left-0 w-full">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-center justify-center h-full -mt-20">
             <Link to="/marketplace" className="text-primary block px-3 py-2 rounded-md text-base font-medium" onClick={toggleMobileMenu}>Marketplace</Link>
             <Link to="/seeker-dashboard" className="text-primary block px-3 py-2 rounded-md text-base font-medium" onClick={toggleMobileMenu}>Seeker Dashboard</Link>
             <Link to="/solver-hub" className="text-primary block px-3 py-2 rounded-md text-base font-medium" onClick={toggleMobileMenu}>Solver Hub</Link>
             <Link to="/login" className="mt-4 w-full flex justify-center" onClick={toggleMobileMenu}>
-                <button className="bg-action text-white font-bold py-3 px-8 rounded-lg shadow-mechanical w-10/12">
-                    Login
-                </button>
+              <button className="w-full bg-action text-white mt-4 px-4 py-2 rounded-md shadow-mechanical hover:shadow-levitated transition-shadow">Login</button>
             </Link>
           </div>
         </div>
       )}
-    </nav>
+    </header>
   );
 };
 

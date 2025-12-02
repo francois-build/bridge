@@ -1,69 +1,61 @@
-import { useState } from 'react';
-import { z } from 'zod';
-import { RoleSelection } from './RoleSelection';
+import React, { useState } from 'react';
 
-const emailSchema = z.string().email({ message: 'Invalid email address' });
+const Onboarding = () => {
+  const [selectedRole, setSelectedRole] = useState(null);
 
-type OnboardingState = 'roleSelection' | 'emailEntry';
-
-export default function Onboarding() {
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
-  const [role, setRole] = useState<string | null>(null);
-  const [onboardingState, setOnboardingState] = useState<OnboardingState>('roleSelection');
-
-  const handleRoleSelect = (selectedRole: string) => {
-    setRole(selectedRole);
-    setOnboardingState('emailEntry');
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      emailSchema.parse(email);
-      // Handle successful validation
-      console.log('Valid email:', email, 'for role:', role);
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        setError(err.issues[0].message);
-      } else {
-        setError('An unexpected error occurred.');
-      }
-    }
-  };
-
-  if (onboardingState === 'roleSelection') {
-    return <RoleSelection onSelect={handleRoleSelect} />;
-  }
+  const roles = [
+    { 
+      name: 'Seeker', 
+      description: 'Post challenges and find the best talent to solve them.', 
+      icon: '' // Add icon later
+    },
+    { 
+      name: 'Solver', 
+      description: 'Solve challenges, showcase your skills, and earn rewards.', 
+      icon: '' // Add icon later
+    },
+    { 
+      name: 'Connector', 
+      description: 'Connect seekers with solvers and earn a commission.', 
+      icon: '' // Add icon later
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-surface flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6 bg-surface-raised border rounded-lg shadow-levitated">
-          <h2 className="text-xl font-semibold text-center text-primary">Welcome to Marketplace</h2>
-          <p className="text-center text-primary/70">
-            Enter your email to get started as a {role}.
-          </p>
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="email" className="font-medium text-primary">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 bg-surface border rounded-md shadow-concave focus:outline-none focus:ring-2 focus:ring-action"
-              placeholder="you@example.com"
-            />
-            {error && <p className="text-sm text-warning">{error}</p>}
-          </div>
-          <button
-            type="submit"
-            className="px-4 py-2 font-semibold text-white bg-action rounded-md shadow-mechanical hover:bg-action/90 focus:outline-none focus:ring-2 focus:ring-action focus:ring-offset-2"
+    <div className="flex flex-col items-center justify-center min-h-screen bg-surface text-primary p-4">
+      <div className="max-w-2xl text-center mb-12">
+        <h1 className="text-4xl md:text-6xl font-bold mb-4">Welcome to Bounty Solutions</h1>
+        <p className="text-lg md:text-xl mb-8 text-primary-muted">The platform where your skills can solve real-world problems and earn you rewards.</p>
+        <button className="bg-action text-white px-8 py-3 rounded-full shadow-levitated hover:shadow-mechanical transition-shadow text-lg font-semibold">
+          Sign in with Google
+        </button>
+      </div>
+      
+      <div className="w-full max-w-4xl">
+        <h2 className="text-3xl font-bold text-primary mb-8 text-center">Choose Your Role</h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          {roles.map((role) => (
+            <div
+              key={role.name}
+              className={`bg-surface-raised p-6 rounded-lg shadow-mechanical cursor-pointer transition-all ${selectedRole === role.name ? 'shadow-levitated border-2 border-action' : ''}`}
+              onClick={() => setSelectedRole(role.name)}
+            >
+              <h3 className="text-2xl font-bold text-primary mb-2">{role.name}</h3>
+              <p className="text-primary-muted">{role.description}</p>
+            </div>
+          ))}
+        </div>
+        <div className="text-center">
+          <button 
+            className="mt-8 bg-action text-white px-8 py-3 rounded-full shadow-levitated hover:shadow-mechanical transition-shadow text-lg font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
+            disabled={!selectedRole}
           >
             Continue
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default Onboarding;
