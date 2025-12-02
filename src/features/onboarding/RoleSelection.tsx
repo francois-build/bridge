@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { Users, Target } from 'lucide-react';
 
 const RoleCard = ({
@@ -17,10 +17,10 @@ const RoleCard = ({
 }) => (
   <div
     onClick={!disabled ? onClick : undefined}
-    className={`bg-ceramic rounded-xl p-6 text-center shadow-ceramic transition-all duration-300 ${!disabled ? 'cursor-pointer hover:shadow-levitated hover:-translate-y-1 border border-transparent hover:border-electric-blue/20' : 'opacity-50 cursor-not-allowed'}`}>
-    <Icon className="w-12 h-12 text-electric-blue mx-auto mb-4" />
-    <h3 className="text-xl font-bold text-ink mb-2">{title}</h3>
-    <p className="text-ink/60 text-sm">{description}</p>
+    className={`bg-surface rounded-xl p-6 text-center shadow-mechanical transition-all duration-300 ${!disabled ? 'cursor-pointer hover:shadow-levitated hover:-translate-y-1' : 'opacity-50 cursor-not-allowed'}`}>
+    <Icon className="w-12 h-12 text-action mx-auto mb-4" />
+    <h3 className="text-xl font-bold text-primary mb-2">{title}</h3>
+    <p className="text-primary/60 text-sm">{description}</p>
   </div>
 );
 
@@ -35,16 +35,15 @@ export const RoleSelection = () => {
       navigate(`/onboarding/${role}`);
     } catch (error) {
       console.error("Error in role selection:", error);
-      // Optionally, show an error message to the user
     }
   };
 
   return (
     <div className="text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <h1 className="text-3xl font-bold tracking-tight text-ink mb-2">
+      <h1 className="text-3xl font-bold tracking-tight text-primary mb-2">
         Choose Your Role
       </h1>
-      <p className="text-ink/70 mb-12 max-w-xl mx-auto">
+      <p className="text-primary/70 mb-12 max-w-xl mx-auto">
         Are you here to solve complex technical challenges, or are you looking to
         hire top-tier talent to build your vision?
       </p>
@@ -65,7 +64,7 @@ export const RoleSelection = () => {
         />
       </div>
       {(loading || !user) && 
-        <p className="mt-4 text-sm text-ink/50">Connecting to authentication service...</p>
+        <p className="mt-4 text-sm text-primary/50">Connecting to authentication service...</p>
       }
     </div>
   );

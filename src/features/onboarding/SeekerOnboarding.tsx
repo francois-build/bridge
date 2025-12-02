@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import { Building, Users, Tag, ArrowRight } from 'lucide-react';
+import { Users, Tag, ArrowRight } from 'lucide-react';
 
 const painPoints = [
   "Supply Chain",

@@ -1,9 +1,11 @@
-
 import { Shield, Clock, Zap, Building2 } from 'lucide-react';
 import type { ChallengeInput } from '../../lib/schemas';
 
+// Define a type for the adversarial data that extends ChallengeInput
+type AdversarialChallengeInput = ChallengeInput & { clientName?: string };
+
 // Adversarial Mock Data
-const ADVERSARIAL_CHALLENGES: ChallengeInput[] = [
+const ADVERSARIAL_CHALLENGES: AdversarialChallengeInput[] = [
   // Case A: The Text Bomb
   {
     title: "ThisIsAReallyLongTitleWithNoSpacesDesignedToTestTheLineClampingAndOverflowBehaviorOfUIComponentsAndEnsureThatTheLayoutDoesNotBreakUnderExtremeConditionsAndInsteadTruncatesTheTextAsExpectedAccordingToTheDesignSpecificationsProvidedByTheUXTeamAndStakeholdersInvolvedInTheProject.",
@@ -34,10 +36,10 @@ const ADVERSARIAL_CHALLENGES: ChallengeInput[] = [
     publicAlias: "Top Secret Corp",
     clientName: "ThisShouldNotBeVisible", // Adversarial field
     milestones: [],
-  } as any,
+  },
 ];
 
-const ChallengeCard = ({ data }: { data: ChallengeInput }) => (
+const ChallengeCard = ({ data }: { data: AdversarialChallengeInput }) => (
     <div className="group relative flex flex-col p-6 transition-all duration-200
       bg-white rounded-xl shadow-sm
       border-t border-white/60 border-b border-slate-200/60 border-x border-slate-100

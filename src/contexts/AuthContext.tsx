@@ -1,20 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { onAuthStateChanged, signInWithPopup } from 'firebase/auth';
 import type { User } from 'firebase/auth';
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 import { auth, db, googleProvider } from '../lib/firebase';
 import type { UserProfile } from '../lib/schemas';
-
-interface AuthContextType {
-  user: User | null;
-  userProfile: UserProfile | null;
-  loading: boolean;
-  signInWithGoogle: () => Promise<void>;
-  signOut: () => Promise<void>;
-  assignRole: (role: 'solver' | 'seeker') => Promise<void>;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { AuthContext } from './AuthContextDefinition';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -98,12 +88,4 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 };

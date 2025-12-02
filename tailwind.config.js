@@ -18,76 +18,21 @@ module.exports = {
     },
     extend: {
       colors: {
-        // Brand: Machined Neumorphism
-        // Surface: The desk (Slate-100) - Used for the main background
-        'surface': '#F1F5F9', 
-        // Ceramic: The raised elements (White/Off-White)
-        'ceramic': '#FFFFFF',
-        // Ink: The data (Slate-900)
-        'ink': '#0F172A',
-        
-        // Semantic Colors
-        'electric-blue': '#2563EB', // Action
-        'signal-green': '#10B981',  // Success
-        'warning-amber': '#F59E0B', // Alert
-        'error-red': '#DC2626',     // Danger
-
-        // UI Framework (Shadcn Compat)
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
-        },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
-        },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
+        primary: '#0F172A', // slate-900 (Trust/Ink)
+        surface: '#F8FAFC', // slate-50 (Canvas)
+        'surface-raised': '#FFFFFF', // white (Cards)
+        action: '#2563EB', // blue-600 (Buttons/Links)
+        success: '#10B981', // emerald-600 (Badges)
+        warning: '#D97706', // amber-600 (Alerts)
+      },
+      boxShadow: {
+        'levitated': '0 8px 30px rgb(0 0 0 / 4%)',
+        'mechanical': '0 4px 14px 0 rgba(0,0,0,0.39)',
+        'concave': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
-      },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: `calc(var(--radius) - 2px)`,
-        sm: 'calc(var(--radius) - 4px)',
-      },
-      boxShadow: {
-        // 1. Levitated: Soft, wide shadow for floating cards
-        'levitated': '0 0 0 1px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.04), 0 12px 24px -4px rgba(0,0,0,0.06)',
-        // 2. Mechanical: Sharp, heavy shadow for primary buttons
-        'mechanical': '0 1px 1px rgba(255,255,255,0.1) inset, 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)',
-        // 3. Concave: Inner shadow for inputs and "sunk" dashboards
-        'concave': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
-        // 4. Ceramic: Very subtle, high-def definition for static panels
-        'ceramic': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-      },
-      backgroundImage: {
-        'noise': 'url("/noise.png")',
       },
       keyframes: {
         'accordion-down': {
@@ -105,5 +50,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate'), require('@tailwindcss/forms'), require('@tailwindcss/typography')],
-}
+  plugins: [require('tailwindcss-animate')],
+};

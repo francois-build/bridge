@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import { UploadCloud, FileText, X, Tag, ShieldOff, ArrowRight } from 'lucide-react';
+import { UploadCloud, X, Tag, ShieldOff, ArrowRight } from 'lucide-react';
 
 type FormValues = {
   pitchDeck?: FileList;

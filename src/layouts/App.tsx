@@ -1,11 +1,13 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from '../contexts/AuthContext';
+import { AuthProvider } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import Onboarding from '../features/onboarding/Onboarding';
 import { RoleSelection } from '../features/onboarding/RoleSelection';
 import SolverOnboarding from '../features/onboarding/SolverOnboarding';
 import SeekerOnboarding from '../features/onboarding/SeekerOnboarding';
 import ScoutOnboarding from '../features/onboarding/ScoutOnboarding';
 import ChallengeFeed from '../features/marketplace/ChallengeFeed';
+import Header from '../components/Header';
 
 const AppLayout = () => {
   const { user, userProfile, loading } = useAuth();
@@ -24,6 +26,7 @@ const AppLayout = () => {
 
   return (
     <div className="bg-surface min-h-screen">
+      <Header />
       <Routes>
         {/* Onboarding Routes */}
         <Route path="/onboarding/solver" element={<SolverOnboarding />} />
