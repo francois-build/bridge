@@ -46,6 +46,19 @@ export const ChallengeInputSchema = z.object({
 );
 export type ChallengeInput = z.infer<typeof ChallengeInputSchema>;
 
+export const ChallengeSchema = z.object({
+    id: z.string(),
+    title: z.string(),
+    description: z.string(),
+    budgetRange: z.string(),
+    isStealth: z.boolean(),
+    publicAlias: z.string().optional().nullable(),
+    industryTags: z.array(z.string()),
+    createdAt: z.any(),
+});
+export type Challenge = z.infer<typeof ChallengeSchema>;
+
+
 export const UserProfileSchema = z.object({
   role: UserRoleSchema,
   probationaryStatus: z.boolean(),

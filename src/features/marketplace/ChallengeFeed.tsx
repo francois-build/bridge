@@ -6,7 +6,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/card';
 import { Badge } from '../../components/ui/badge';
 import { Button } from '../../components/ui/button';
-import { Challenge } from '../../lib/schemas';
+import type { Challenge } from '../../lib/schemas';
 
 // Skeleton loader for a card
 const SkeletonCard = () => (
