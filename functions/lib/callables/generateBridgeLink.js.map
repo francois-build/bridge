@@ -1,0 +1,1 @@
+{"version":3,"file":"generateBridgeLink.js","sourceRoot":"","sources":["../../src/callables/generateBridgeLink.ts"],"names":[],"mappings":";;;AAAA,gDAAgD;AAEnC,QAAA,kBAAkB,GAAG,SAAS;KACxC,OAAO,CAAC,EAAE,YAAY,EAAE,CAAC,EAAE,CAAC;KAC5B,KAAK,CAAC,SAAS,CAAC,KAAK,EAAE,GAAG,EAAE,GAAG,EAAE,EAAE;IAClC,GAAG,CAAC,IAAI,CAAC,EAAE,IAAI,EAAE,wCAAwC,EAAE,CAAC,CAAC;AAC/D,CAAC,CAAC,CAAC"}
