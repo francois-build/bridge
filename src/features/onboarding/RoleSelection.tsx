@@ -1,61 +1,72 @@
-import { Briefcase, Code, Share2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import { Users, Target } from 'lucide-react';
 
-// Define the roles with their specific attributes
-const roles = [
-  { 
-    name: 'Seeker', 
-    description: 'Post challenges, find talent.', 
-    icon: <Briefcase className="w-8 h-8 mx-auto mb-5 text-ink/50 group-hover:text-electric-blue transition-colors duration-300" /> 
-  },
-  { 
-    name: 'Solver', 
-    description: 'Solve challenges, earn bounties.', 
-    icon: <Code className="w-8 h-8 mx-auto mb-5 text-ink/50 group-hover:text-electric-blue transition-colors duration-300" /> 
-  },
-  { 
-    name: 'Connector', 
-    description: 'Broker deals, earn commissions.', 
-    icon: <Share2 className="w-8 h-8 mx-auto mb-5 text-ink/50 group-hover:text-electric-blue transition-colors duration-300" /> 
-  },
-];
+const RoleCard = ({
+  icon: Icon,
+  title,
+  description,
+  onClick,
+  disabled,
+}: {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  onClick: () => void;
+  disabled: boolean;
+}) => (
+  <div
+    onClick={!disabled ? onClick : undefined}
+    className={`bg-ceramic rounded-xl p-6 text-center shadow-ceramic transition-all duration-300 ${!disabled ? 'cursor-pointer hover:shadow-levitated hover:-translate-y-1 border border-transparent hover:border-electric-blue/20' : 'opacity-50 cursor-not-allowed'}`}>
+    <Icon className="w-12 h-12 text-electric-blue mx-auto mb-4" />
+    <h3 className="text-xl font-bold text-ink mb-2">{title}</h3>
+    <p className="text-ink/60 text-sm">{description}</p>
+  </div>
+);
 
-export const RoleSelection = ({ onSelect }: { onSelect: (role: string) => void }) => {
+export const RoleSelection = () => {
+  const { assignRole, user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSelectRole = async (role: 'solver' | 'seeker') => {
+    if (!user) return;
+    try {
+      await assignRole(role);
+      navigate(`/onboarding/${role}`);
+    } catch (error) {
+      console.error("Error in role selection:", error);
+      // Optionally, show an error message to the user
+    }
+  };
+
   return (
-    // Main container with the base surface and noise texture
-    <div className="flex flex-col items-center justify-center min-h-screen bg-surface bg-noise p-4">
-      
-      {/* Header section with updated typography */}
-      <div className="text-center mb-16 animate-in fade-in slide-in-from-top duration-500">
-        <h1 className="text-5xl font-bold text-ink tracking-tight">Welcome to BRIDGE</h1>
-        <p className="text-lg text-ink/70 mt-3">The open marketplace for technical challenges.</p>
+    <div className="text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <h1 className="text-3xl font-bold tracking-tight text-ink mb-2">
+        Choose Your Role
+      </h1>
+      <p className="text-ink/70 mb-12 max-w-xl mx-auto">
+        Are you here to solve complex technical challenges, or are you looking to
+        hire top-tier talent to build your vision?
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+        <RoleCard
+          icon={Target}
+          title="Solver"
+          description="I am a builder, an engineer, a creative technologist ready to tackle challenges."
+          onClick={() => handleSelectRole('solver')}
+          disabled={loading || !user}
+        />
+        <RoleCard
+          icon={Users}
+          title="Seeker"
+          description="I am a founder, a product manager, a visionary looking to post a challenge."
+          onClick={() => handleSelectRole('seeker')}
+          disabled={loading || !user}
+        />
       </div>
-      
-      {/* Grid for the role selection cards */}
-      <div className="grid md:grid-cols-3 gap-8 animate-in fade-in slide-in-from-bottom-12 duration-700 w-full max-w-4xl">
-        {roles.map((role) => (
-          <button
-            key={role.name}
-            onClick={() => onSelect(role.name.toLowerCase())}
-            className="
-              group text-center p-8 bg-ceramic rounded-2xl 
-              shadow-concave 
-              transition-all duration-300 
-              border border-transparent
-              hover:-translate-y-2 hover:shadow-levitated hover:border-electric-blue/30
-              focus:outline-none focus:ring-4 focus:ring-glow
-            "
-          >
-            {role.icon}
-            <h3 className="text-xl font-semibold text-ink mb-1">{role.name}</h3>
-            <p className="text-ink/60 text-sm">{role.description}</p>
-          </button>
-        ))}
-      </div>
-
-      {/* Footer with muted text color */}
-      <footer className="absolute bottom-8 text-sm text-ink/40">
-        Select a role to enter your workspace.
-      </footer>
+      {(loading || !user) && 
+        <p className="mt-4 text-sm text-ink/50">Connecting to authentication service...</p>
+      }
     </div>
   );
 };
