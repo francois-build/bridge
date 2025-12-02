@@ -1,21 +1,11 @@
-import { createContext, useEffect, useState, ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, type User } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 import type { UserProfile } from '../lib/schemas';
+import { AuthContext, type AuthContextType } from './authContextDefinition';
 
-export type AuthContextType = {
-  user: User | null;
-  userProfile: UserProfile | null;
-  loading: boolean;
-  signInWithGoogle: () => Promise<void>;
-  signOut: () => Promise<void>;
-  assignRole: (role: 'solver' | 'seeker') => Promise<void>;
-}
-
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -60,7 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const assignRole = async (role: 'solver' | 'seeker') => {
+  const assignRole = async (role: 'solver' | 'seeker' | 'connector') => {
     if (user) {
       try {
         const docRef = doc(db, 'users', user.uid);
@@ -82,4 +72,4 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+}

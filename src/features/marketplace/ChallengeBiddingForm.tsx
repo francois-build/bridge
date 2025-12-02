@@ -1,4 +1,4 @@
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, type UseFormRegister, type FieldErrors } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -10,20 +10,28 @@ import { useNavigate } from 'react-router-dom';
 type ChallengeFormInput = z.input<typeof ChallengeInputSchema>;
 type ChallengeOutputValues = z.output<typeof ChallengeInputSchema>;
 
-// A reusable input component to keep the form DRY
-const FormInput = ({ id, register, errors, label, type = 'text', ...props }) => (
-  <div>
-    <label htmlFor={id} className="block text-sm font-medium text-ink/80 mb-1">{label}</label>
-    <input 
-      {...register(id)} 
-      id={id} 
-      type={type}
-      className="mt-1 block w-full px-3 py-2 bg-surface border border-white/50 rounded-md shadow-concave text-ink focus:outline-none focus:ring-2 focus:ring-glow"
-      {...props}
-    />
-    {errors[id] && <p className="mt-1 text-sm text-error-red">{errors[id].message}</p>}
-  </div>
-);
+interface FormInputProps {
+    id: keyof ChallengeFormInput;
+    register: UseFormRegister<ChallengeFormInput>;
+    errors: FieldErrors<ChallengeFormInput>;
+    label: string;
+    type?: string;
+    [key: string]: any;
+  }
+  
+  const FormInput = ({ id, register, errors, label, type = 'text', ...props }: FormInputProps) => (
+    <div>
+      <label htmlFor={id} className="block text-sm font-medium text-ink/80 mb-1">{label}</label>
+      <input 
+        {...register(id)} 
+        id={id} 
+        type={type}
+        className="mt-1 block w-full px-3 py-2 bg-surface border border-white/50 rounded-md shadow-concave text-ink focus:outline-none focus:ring-2 focus:ring-glow"
+        {...props}
+      />
+      {errors[id] && <p className="mt-1 text-sm text-error-red">{(errors as any)[id].message}</p>}
+    </div>
+  );
 
 export default function ChallengeBiddingForm() {
   const navigate = useNavigate();
@@ -41,7 +49,7 @@ export default function ChallengeBiddingForm() {
       budgetRange: '<50k',
       isStealth: false,
       publicAlias: '',
-      industryTags: '', 
+      industryTags: [], 
       milestones: [{ title: 'Project Completion', payoutPercentage: 100, description: '', status: 'pending_funding' }],
     },
   });
@@ -51,8 +59,17 @@ export default function ChallengeBiddingForm() {
     name: "milestones",
   });
 
-  const onSubmit: SubmitHandler<ChallengeOutputValues> = (data) => {
-    console.log('Form data submitted:', data);
+  const onSubmit: SubmitHandler<ChallengeFormInput> = (data) => {
+    const processedData: ChallengeOutputValues = {
+        ...data,
+        isStealth: !!data.isStealth,
+        industryTags: Array.isArray(data.industryTags) ? data.industryTags : (data.industryTags as string).split(',').map((tag: string) => tag.trim()),
+        milestones: data.milestones.map(ms => ({
+          ...ms,
+          status: ms.status || 'pending_funding'
+        }))
+      };
+    console.log('Form data submitted:', processedData);
     alert('Challenge submitted! Check the console for the data.');
     navigate('/');
   };

@@ -2,35 +2,62 @@
 
 ## Overview
 
-This project is a React application with a Firebase backend. It includes a serverless infrastructure using Cloud Functions for backend logic and Firestore for the database.
+This document outlines the architecture and development plan for the "Bridge" application, a platform designed to connect problem solvers with those seeking solutions to various challenges.
 
-## Application Details
+## Current State
 
-### Frontend
+### Core Functionality
 
-- **Framework:** React
-- **Styling:** Tailwind CSS
-- **State Management:** React hooks and context
+*   **User Authentication:** Users can sign in with their Google accounts using Firebase Authentication.
+*   **Onboarding:** A guided onboarding process allows users to select a role (Solver, Seeker, or Scout) and complete a role-specific onboarding flow.
+*   **Challenge Marketplace:** A central feed displays a list of available challenges.
+*   **Challenge Details:** Users can view the details of a specific challenge.
 
-### Backend
+### Technology Stack
 
-- **Platform:** Firebase
-- **Database:** Firestore
-- **Serverless Functions:** Cloud Functions for Firebase (Gen 2)
+*   **Frontend:** React, TypeScript, Vite
+*   **Styling:** Tailwind CSS
+*   **Routing:** `react-router-dom`
+*   **Authentication:** Firebase Authentication
+*   **Database:** Cloud Firestore
 
-## Implemented Features
+### Project Structure
 
-- **Authentication:** Firebase Authentication with email and password.
-- **User Profile:** Firestore collection to store user data.
-- **Security Rules:** Firestore security rules to protect user data.
-- **Cloud Functions:**
-    - `onUserCreate`: Triggered on new user creation to create a user document in Firestore.
-    - `sanitizeInputs`: Callable function to sanitize user input.
-    - `generateBridgeLink`: HTTPS callable function to generate a link.
+```
+src
+├── assets
+├── components
+│   ├── Header.tsx
+│   └── ui
+├── contexts
+│   ├── AuthContext.tsx
+│   └── authContextDefinition.ts
+├── features
+│   ├── challenges
+│   │   └── ChallengeDetail.tsx
+│   ├── marketplace
+│   │   ├── ChallengeBiddingForm.tsx
+│   │   └── ChallengeFeed.tsx
+│   └── onboarding
+│       ├── Onboarding.tsx
+│       ├── RoleSelection.tsx
+│       ├── ScoutOnboarding.tsx
+│       ├── SeekerOnboarding.tsx
+│       └── SolverOnboarding.tsx
+├── hooks
+│   └── useAuth.ts
+├── layouts
+│   └── App.tsx
+├── lib
+│   ├── firebase.ts
+│   ├── schemas.ts
+│   └── utils.ts
+├── main.tsx
+└── index.css
+```
 
-## Current Plan
+## Next Steps
 
-- Set up the serverless backend logic with Cloud Functions Gen 2.
-- Create a modular structure for functions.
-- Implement secret management using `defineSecret()`.
-- Configure functions for performance and cost-effectiveness.
+Now that the initial setup and linting are complete, I will focus on enhancing the user experience and adding new features. I will start by improving the visual design of the existing pages to create a more modern and engaging interface. I will then move on to implementing new functionality, such as creating and managing challenges.
+
+I am ready for your next instruction.
