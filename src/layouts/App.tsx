@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import Onboarding from '../features/onboarding/Onboarding';
 import { RoleSelection } from '../features/onboarding/RoleSelection';
 import SeekerOnboarding from '../features/onboarding/SeekerOnboarding';
+import ScoutOnboarding from '../features/onboarding/ScoutOnboarding';
 import ChallengeFeed from '../features/marketplace/ChallengeFeed';
 import Header from '../components/Header';
 import ChallengeDetail from '../features/challenges/ChallengeDetail';
@@ -29,6 +30,7 @@ const AppLayout = () => {
       <Routes>
         {/* Onboarding Routes */}
         <Route path="/onboarding/seeker" element={<SeekerOnboarding />} />
+        <Route path="/onboarding/scout" element={<ScoutOnboarding />} />
 
         {/* Main App Routes */}
         <Route path="/marketplace" element={<ChallengeFeed />} />
