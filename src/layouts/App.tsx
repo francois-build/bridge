@@ -3,11 +3,10 @@ import { AuthProvider } from '../contexts/AuthContext';
 import { useAuth } from '../hooks/useAuth';
 import Onboarding from '../features/onboarding/Onboarding';
 import { RoleSelection } from '../features/onboarding/RoleSelection';
-import SolverOnboarding from '../features/onboarding/SolverOnboarding';
 import SeekerOnboarding from '../features/onboarding/SeekerOnboarding';
-import ScoutOnboarding from '../features/onboarding/ScoutOnboarding';
 import ChallengeFeed from '../features/marketplace/ChallengeFeed';
 import Header from '../components/Header';
+import ChallengeDetail from '../features/challenges/ChallengeDetail';
 
 const AppLayout = () => {
   const { user, userProfile, loading } = useAuth();
@@ -29,12 +28,11 @@ const AppLayout = () => {
       <Header />
       <Routes>
         {/* Onboarding Routes */}
-        <Route path="/onboarding/solver" element={<SolverOnboarding />} />
         <Route path="/onboarding/seeker" element={<SeekerOnboarding />} />
-        <Route path="/onboarding/scout" element={<ScoutOnboarding />} />
 
         {/* Main App Routes */}
         <Route path="/marketplace" element={<ChallengeFeed />} />
+        <Route path="/challenge/:id" element={<ChallengeDetail />} />
 
         {/* Redirect base path to marketplace for logged-in users */}
         <Route path="*" element={<Navigate to="/marketplace" replace />} />

@@ -29,6 +29,7 @@ module.exports = {
       boxShadow: {
         mechanical: '5px 5px 10px #a3a3a3, -5px -5px 10px #ffffff',
         levitated: '10px 10px 20px #a3a3a3, -10px -10px 20px #ffffff',
+        concave: 'inset 5px 5px 10px #a3a3a3, inset -5px -5px 10px #ffffff',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
