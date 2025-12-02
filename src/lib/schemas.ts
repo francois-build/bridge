@@ -18,7 +18,7 @@ export type EscrowStatus = z.infer<typeof EscrowStatusSchema>;
 // Complex Objects
 
 export const MilestoneSchema = z.object({
-  title: z.string().min(5, { message: "Milestone title must be at least 5 characters." }),
+  title: z.string().min(6, { message: "Milestone title must be at least 6 characters." }),
   payoutPercentage: z.number().min(1).max(100),
   description: z.string().optional(),
   status: EscrowStatusSchema.default('pending_funding'),
