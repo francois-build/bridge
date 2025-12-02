@@ -3,7 +3,55 @@
 @tailwind utilities;
 
 @layer base {
+  /* 1. Set default font and anti-aliasing */
   body {
-    @apply bg-slate-50 text-slate-900;
+    @apply font-sans antialiased;
+  }
+
+  /* 
+   * 2. Apply the "Machined Neumorphism" base styles.
+   *    - bg-surface: Sets the main off-white background.
+   *    - bg-noise: Adds the subtle, tactile texture.
+   *    - text-ink: Ensures high-contrast, readable text by default.
+  */
+  body {
+    @apply bg-surface bg-noise text-ink;
+  }
+
+  /* 3. Define the CSS variables for theming (light mode) */
+  :root {
+    --background: 240 10% 99%; /* surface */
+    --foreground: 240 10% 3.9%; /* ink */
+
+    --card: 240 10% 99%;
+    --card-foreground: 240 10% 3.9%;
+ 
+    --popover: 240 10% 99%;
+    --popover-foreground: 240 10% 3.9%;
+ 
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+ 
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+ 
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+ 
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+ 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+ 
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    /* Dark mode variables would go here if we were implementing it */
   }
 }

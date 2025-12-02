@@ -1,52 +1,109 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
+  darkMode: ['class'],
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
   ],
-  darkMode: 'class',
+  prefix: '',
   theme: {
+    container: {
+      center: true,
+      padding: '2rem',
+      screens: {
+        '2xl': '1400px',
+      },
+    },
     extend: {
       colors: {
-        slate: {
-          50: '#F8FAFC',  // Surface
-          100: '#F1F5F9', // Ceramic
-          200: '#E2E8F0',
-          300: '#CBD5E1',
-          500: '#64748B',
-          700: '#334155',
-          900: '#0F172A', // Ink (Primary)
+        // Brand: Machined Neumorphism
+        // Surface: The desk (Slate-100) - Used for the main background
+        'surface': '#F1F5F9', 
+        // Ceramic: The raised elements (White/Off-White)
+        'ceramic': '#FFFFFF',
+        // Ink: The data (Slate-900)
+        'ink': '#0F172A',
+        
+        // Semantic Colors
+        'electric-blue': '#2563EB', // Action
+        'signal-green': '#10B981',  // Success
+        'warning-amber': '#F59E0B', // Alert
+        'error-red': '#DC2626',     // Danger
+
+        // UI Framework (Shadcn Compat)
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
         },
-        blue: {
-          100: '#DBEAFE',
-          600: '#2563EB', // Electric Blue (Action)
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
         },
-        amber: {
-            50: '#FFFBEB',
-            100: '#FEF3C7',
-            500: '#F59E0B',
-            600: '#D97706',
-            700: '#B45309',
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
         },
-        emerald: {
-          500: '#10B981', // Signal Green (Success)
-        }
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: `calc(var(--radius) - 2px)`,
+        sm: 'calc(var(--radius) - 4px)',
+      },
       boxShadow: {
-        // Updated shadows for "Machined Neumorphism"
-        'levitated': '0_8px_30px_rgb(0,0,0,0.04)',
-        'mechanical': '0_4px_14px_0_rgba(0,0,0,0.39)',
-        'inner': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
-        'ceramic': '0_2px_8px_rgba(0,0,0,0.04)',
-      }
+        // 1. Levitated: Soft, wide shadow for floating cards
+        'levitated': '0 0 0 1px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.04), 0 12px 24px -4px rgba(0,0,0,0.06)',
+        // 2. Mechanical: Sharp, heavy shadow for primary buttons
+        'mechanical': '0 1px 1px rgba(255,255,255,0.1) inset, 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)',
+        // 3. Concave: Inner shadow for inputs and "sunk" dashboards
+        'concave': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
+        // 4. Ceramic: Very subtle, high-def definition for static panels
+        'ceramic': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+      },
+      backgroundImage: {
+        'noise': 'url("/noise.png")',
+      },
+      keyframes: {
+        'accordion-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
+        },
+        'accordion-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
+        },
+      },
+      animation: {
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
+      },
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [require('tailwindcss-animate'), require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 }
