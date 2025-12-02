@@ -6,7 +6,7 @@ const ChallengeInputSchema = z.object({
   description: z.string(),
 });
 
-export const sanitizeinputs = onCall((request) => {
+export const sanitizeinputs = onCall({ maxInstances: 10 }, (request) => {
   const parsedData = ChallengeInputSchema.parse(request.data);
   // Mock AI cleaning logic
   const sanitizedData = {

@@ -1,3 +1,3 @@
-export { onUserCreate } from './triggers/onUserCreate';
-export { sanitizeInputs } from './callables/sanitizeInputs';
-export { generateBridgeLink } from './callables/generateBridgeLink';
+export { onusercreate } from "./triggers/onUserCreate";
+export { sanitizeinputs } from "./callables/sanitizeInputs";
+export { generatebridgelink } from "./callables/generateBridgeLink";

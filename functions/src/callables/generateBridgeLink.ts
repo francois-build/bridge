@@ -1,5 +1,5 @@
-import { onCall } from "firebase-functions/v2/https";
+import { onRequest } from "firebase-functions/v2/https";
 
-export const generateBridgeLink = onCall({ minInstances: 1 }, (request) => {
-  return { link: "https://bridge.work/new-challenge-link" };
+export const generatebridgelink = onRequest({ minInstances: 1 }, (req, res) => {
+  res.json({ link: "https://bridge.work/new-challenge-link" });
 });

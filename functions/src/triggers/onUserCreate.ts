@@ -1,10 +1,10 @@
-import { onUserCreate } from "firebase-functions/v2/auth";
+import { onDocumentCreated } from "firebase-functions/v2/firestore";
 import * as admin from "firebase-admin";
 
 admin.initializeApp();
 
-export const onusercreate = onUserCreate(async (event) => {
-  const uid = event.data.uid;
+export const onusercreate = onDocumentCreated("users/{uid}", (event) => {
+  const uid = event.params.uid;
   const userRef = admin.firestore().collection("users").doc(uid);
 
   return userRef.set(
