@@ -1,18 +1,53 @@
-rules_version='2'
+rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // Helper Functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function hasRole(role) {
+      return getUserData().data.role == role;
+    }
+
+    // Default Deny Rule
     match /{document=**} {
-      // This rule allows anyone with your database reference to view, edit,
-      // and delete all data in your database. It is useful for getting
-      // started, but it is configured to expire after 30 days because it
-      // leaves your app open to attackers. At that time, all client
-      // requests to your database will be denied.
-      //
-      // Make sure to write security rules for your app before that time, or
-      // else all client requests to your database will be denied until you
-      // update your rules.
-      allow read, write: if request.time < timestamp.date(2026, 1, 1);
+      allow read, write: if false;
+    }
+
+    // users Collection
+    match /users/{userId} {
+      allow read: if isOwner(userId) || (hasRole('seeker') && resource.data.role == 'solver');
+      allow update: if isOwner(userId) && request.resource.data.role == resource.data.role;
+      allow create: if isSignedIn();
+    }
+
+    // challenges Collection
+    match /challenges/{challengeId} {
+      allow create: if isSignedIn() && hasRole('seeker');
+      allow update: if isOwner(resource.data.ownerId);
+      allow read: if resource.data.isStealth == false || isOwner(resource.data.ownerId) || request.auth.uid in resource.data.allowedViewerIds;
+    }
+
+    // applications Collection
+    match /applications/{applicationId} {
+        allow create: if hasRole('solver') && getUserData().data.probationaryStatus == false;
+        allow read: if isOwner(resource.data.solverId) || request.auth.uid == resource.data.challengeOwnerId;
+    }
+
+    // sys_audit_logs Collection
+    match /sys_audit_logs/{logId} {
+      allow read, write: if false;
     }
   }
 }
